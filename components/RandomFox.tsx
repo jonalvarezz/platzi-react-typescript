@@ -1,9 +1,8 @@
-// Generates a random number between 1 and 122
-const randomNumber = () => Math.floor(Math.random() * 122) + 1;
+type Props = {
+  image: string;
+};
 
-export function RandomFox(): JSX.Element {
-  const image = `https://randomfox.ca/images/${randomNumber()}.jpg`;
-
+export function RandomFox({ image }: Props): JSX.Element {
   return (
     <img
       width="320"
