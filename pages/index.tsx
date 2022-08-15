@@ -2,6 +2,11 @@ import { useState } from "react";
 import type { MouseEventHandler } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+
+// Ejemplo utilizando una librería sin tipos.
+// Realmente no hace falta su uso.
+import { random } from "lodash";
+
 import { LazyImage } from "@/components/RandomFox";
 
 // generate simple unique id
@@ -13,14 +18,14 @@ const generateId = (): string => {
 };
 
 // random number from 1 to 122
-const random = () => Math.floor(Math.random() * 122) + 1;
+const myRandom = () => random(1, 122);
 
 const Home: NextPage = () => {
   const [images, setImages] = useState<Array<IFoxImageItem>>([]);
 
   const addNewFox: MouseEventHandler<HTMLButtonElement> = () => {
     const id = generateId();
-    const url = `https://randomfox.ca/images/${random()}.jpg`;
+    const url = `https://randomfox.ca/images/${myRandom()}.jpg`;
     setImages([...images, { id, url }]);
   };
 
