@@ -14,11 +14,16 @@ export function LazyImage({
   ...imgProps
 }: Props): JSX.Element {
   const node = useRef<HTMLImageElement>(null);
+  const [isLazyLoaded, setIsLazyLoaded] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(
     "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
   );
 
   useEffect(() => {
+    if (isLazyLoaded) {
+      return;
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting || !node.current) {
@@ -26,6 +31,8 @@ export function LazyImage({
         }
 
         setCurrentSrc(src);
+        observer.disconnect();
+        setIsLazyLoaded(true);
 
         if (typeof onLazyLoad === "function") {
           onLazyLoad(node.current);
@@ -40,7 +47,7 @@ export function LazyImage({
     return () => {
       observer.disconnect();
     };
-  }, [src, onLazyLoad]);
+  }, [src, onLazyLoad, isLazyLoaded]);
 
   return <img ref={node} src={currentSrc} {...imgProps} />;
 }
